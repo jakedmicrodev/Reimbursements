@@ -1,0 +1,74 @@
+<!-- #include file="App_Code/ClaimPageManager.asp" -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<%
+Dim manager
+Dim view
+Dim providerID
+Dim providerList
+
+providerID = Request.Form("ProviderID")
+
+Set manager=New CClaimPageManager
+providerList = manager.LoadProvidersWithOnChange(providerID)
+
+If providerID <> "" Then
+	view=manager.ViewClaimsByProviderID(providerID)
+End If
+
+'Response.Write("Messages: " & manager.Messages & "<br/>")
+Set manager=Nothing
+%>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>View Claims By Provider</title>
+		<link rel="stylesheet" href="cssMenus/menu_style.css" type="text/css" />
+		<link rel="stylesheet" href="css/table.css" type="text/css" />
+		<link rel="stylesheet" href="css/form2.css" type="text/css" /> 	
+		<script type="text/javascript">
+			function submitform() 
+			{ 
+				document.form.submit(); 
+			}
+			
+			function popUp(url, w, h, t, l) {
+				day = new Date();
+				id = day.getTime();
+				eval("page" + id + " = window.open(url, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=yes,width=" + w + ",height=" + h + ",left=" + l + ",top=" + t + "');");
+			}
+			function popUpSmall(URL) {
+				popUp(URL, 250, 220, 100, 300)
+			}
+			function popUpMedium(URL) {
+				popUp(URL, 560, 300, 100, 200)
+			}
+			function popUpBig(URL) {
+				popUp(URL, 690, 550, 100, 50)
+			}
+		</script>
+	</head>
+	<!-- #include file="menu\menu.inc" -->
+	<body>
+		<div class="container">
+			<h2>Claims By Provider</h2>
+			<form  action="ClaimsViewByProviderID.asp" method="post" name="form">
+				<div class="row">
+					<div class="col-10">
+						<label for="ProviderID">Provider</label>
+					</div>
+					<div class="col-15">
+						<%= providerList %>
+					</div>
+					<div class="col-75"></div>
+				</div>
+				<div class="row">
+					<div class="col-80"></div>
+				</div>
+				<div class="row">
+				<%= view %>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
